@@ -46,10 +46,12 @@ def f(arr):
 async def f2(arr):
     return f(arr)
 
+
 def f_mp(arr):
     n_workers = 4
     with mp.Pool(n_workers) as pool:
         return pool.map(f, np.array_split(arr, n_workers))
+
 
 async def f_threaded(arr, loop):
     n_workers = 4
@@ -62,9 +64,9 @@ async def f_threaded(arr, loop):
     results = await asyncio.gather(*tasks)
     return np.concatenate(results)
 
+
 def main():
     arr = list(range(10000000))
-
     ts = time.time()
     f(arr)
     print('Single process single thread (sync): ', time.time() - ts)
@@ -84,6 +86,7 @@ def main():
     # loop = asyncio.get_event_loop()
     loop.run_until_complete(f_threaded(arr, loop))
     print('Single process multi thread: ', time.time() - ts)
+
 
 if __name__ == "__main__":
     main()
